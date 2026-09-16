@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Kamu ❤️</title>
+    <!-- Google Fonts: Tambah Playfair Display untuk judul step 4 -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Sacramento&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animasi Bunga Gugur */
+        .petal {
+            position: fixed;
+            background-color: #ffb6c1;
+            border-radius: 15px 0 15px 0;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0.2; }
+        }
+
+        /* Tombol Musik Floating */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 8px 16px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1000;
+            font-size: 0.85rem;
+            color: #ff4d6d;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            padding: 35px 25px;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(255, 105, 180, 0.2);
+            text-align: center;
+            max-width: 440px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: all 0.3s ease;
+        }
+
+        .step {
+            display: none;
+            animation: fadeIn 0.6s ease-in-out forwards;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart-icon {
+            font-size: 55px;
+            color: #ff4d6d;
+            margin-bottom: 10px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.12); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-family: 'Sacramento', cursive;
+            font-size: 2.7rem;
+            color: #ff4d6d;
+            margin-bottom: 12px;
+        }
+
+        /* Style Khusus Judul Step 4 (Rapi, Elegan & Jelas Dibaca) */
+        .title-step4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #ff4d6d;
+            margin-bottom: 18px;
+            text-transform: uppercase;
+        }
+
+        p {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* Desain Kolase Foto Modern & Besar */
+        .photo-collage-wrapper {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .photo-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            border: 3px solid #fff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 22px rgba(255, 77, 109, 0.25);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .photo-card.large { grid-column: span 2; height: 200px; }
+        .photo-card.medium { height: 150px; }
+        .photo-card.wide { grid-column: span 2; height: 170px; }
+
+        /* Grid Kartu Pesan */
+        .memory-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .memory-card {
+            background: #fff0f3;
+            padding: 12px 16px;
+            border-radius: 14px;
+            border-left: 4px solid #ff4d6d;
+            font-size: 0.85rem;
+            color: #444;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            min-height: 50px;
+        }
+
+        button {
+            padding: 11px 24px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-yes {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.35);
+        }
+
+        .btn-yes:hover {
+            background-color: #ff2a55;
+            transform: scale(1.04);
+        }
+
+        .btn-no {
+            background-color: #e8e8e8;
+            color: #666;
+            width: auto;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Modal Pop-up */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 320px;
+            width: 100%;
+            animation: popUp 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        @keyframes popUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h2 {
+            color: #ff4d6d;
+            font-family: 'Sacramento', cursive;
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 26px 16px; }
+            h1 { font-size: 2.3rem; }
+            .title-step4 { font-size: 1.5rem; }
+            p { font-size: 0.85rem; }
+            button { padding: 10px 20px; font-size: 0.88rem; }
+            .photo-card.large { height: 170px; }
+            .photo-card.medium { height: 130px; }
+            .photo-card.wide { height: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Musik -->
+    <div class="music-control" onclick="toggleMusic()">
+        <span id="musicIcon">🎵</span>
+        <span id="musicText">Rex Orange County - Happiness</span>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop>
+        <source src="happiness.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card">
+        
+        <!-- STEP 1: Sampul Surat -->
+        <div class="step active" id="step1">
+            <div class="heart-icon">✉️</div>
+            <h1>Ada Pesan Buat Kamu</h1>
+            <p>dapin buatin khusus buat lupi. Tolong dibaca sebentar ya sayang... 🥺</p>
+            <button class="btn-yes" onclick="startExperience()">Buka Surat</button>
+        </div>
+
+        <!-- STEP 2: Pesan Permintaan Maaf Spesifik -->
+        <div class="step" id="step2">
+            <div class="heart-icon">🥺</div>
+            <h1>Maafin Aku Ya?</h1>
+            <p>
+                sayang aku minta maaf gawe koe sedih, marakne koe mikir sng engga-engga.<br><br>
+                Aku sama sekali nggak ada niat buat nutupin dari kamu atau bikin kamu sedih. Maaf ya udah bikin kamu kepikiran... 
+                <br><br>
+                Kamu mau kan maafin aku? ❤️
+            </p>
+
+            <div class="btn-container">
+                <button class="btn-yes" onclick="nextStep(3)">Mau ❤️</button>
+                <button class="btn-no" id="btnNo" onmouseover="moveButton()" onclick="moveButton()" ontouchstart="moveButton()">Enggak 😜</button>
+            </div>
+        </div>
+
+        <!-- STEP 3: Penegasan & Alasan -->
+        <div class="step" id="step3">
+            <h1>Kamu Harus Tahu...</h1>
+            <div class="memory-grid">
+                <div class="memory-card">🤍 Di hati aku cuma ada kamu, nggak pernah ada yang lain🥺</div>
+                <div class="memory-card">💬 Ke depannya aku bakal lebih terbuka & cerita apa aja ke kamu biar nggak ada salah paham lagi🥺</div>
+                <div class="memory-card">🌸 Aku paling enggak suka lihat kamu sedih, apalagi karena kecerobohanku sendiri🥺</div>
+            </div>
+            <button class="btn-yes" onclick="nextStep(4)">Lihat Momen Kita 📸</button>
+        </div>
+
+        <!-- STEP 4: Kolase Foto Bersama dengan Font Judul Baru -->
+        <div class="step" id="step4">
+            <h1 class="title-step4">🥺Dapin Sayang Lupii🥺</h1>
+            
+            <div class="photo-collage-wrapper">
+                <div class="photo-card large">
+                    <img src="foto1.jpeg" onerror="this.src='https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=600'" alt="Momen 1">
+                </div>
+                <div class="photo-card medium">
+                    <img src="foto2.jpeg" onerror="this.src='https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400'" alt="Momen 2">
+                </div>
+                <div class="photo-card medium">
+                    <img src="foto3.jpeg" onerror="this.src='https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400'" alt="Momen 3">
+                </div>
+                <div class="photo-card wide">
+                    <img src="foto4.jpeg" onerror="this.src='https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600'" alt="Momen 4">
+                </div>
+            </div>
+
+            <button class="btn-yes" onclick="forgiveMe()">Kirim Pelukan 🤗</button>
+        </div>
+
+    </div>
+
+    <!-- Modal Pop-up -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h2>Makasih Sayang! 🥰</h2>
+            <p>Makasih yaa udah mau ngertiin dan maafin aku. dapin sayang lupii</p>
+            <br>
+            <button class="btn-yes" onclick="closeModal()">Oke Sayang 🤗</button>
+        </div>
+    </div>
+
+    <script>
+        const music = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        function createPetals() {
+            const petalCount = 15;
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.width = Math.random() * 12 + 8 + 'px';
+                petal.style.height = petal.style.width;
+                petal.style.animationDuration = Math.random() * 5 + 5 + 's';
+                petal.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(petal);
+            }
+        }
+        createPetals();
+
+        function startExperience() {
+            music.play().then(() => {
+                isPlaying = true;
+                document.getElementById('musicIcon').innerText = '🔊';
+            }).catch(error => {
+                console.log("Audio play blocked:", error);
+            });
+
+            nextStep(2);
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                document.getElementById('musicIcon').innerText = '🔇';
+            } else {
+                music.play();
+                document.getElementById('musicIcon').innerText = '🔊';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function nextStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById(`step${stepNumber}`).classList.add('active');
+        }
+
+        function moveButton() {
+            const btnNo = document.getElementById('btnNo');
+            const padding = 20;
+            const maxX = window.innerWidth - btnNo.offsetWidth - padding;
+            const maxY = window.innerHeight - btnNo.offsetHeight - padding;
+            
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+            
+            btnNo.style.position = 'fixed';
+            btnNo.style.left = `${randomX}px`;
+            btnNo.style.top = `${randomY}px`;
+            btnNo.style.zIndex = '99';
+        }
+
+        function forgiveMe() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 }
+            });
+
+            document.getElementById('successModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').style.display = 'none';
+            const nomorWA = "62895401939695";
+            const pesan = encodeURIComponent("iyaa sayang dimaafin");
+            window.location.href = `https://wa.me/${nomorWA}?text=${pesan}`;
+        }
+    </script>
+</body>
+</html>
